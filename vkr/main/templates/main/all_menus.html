@@ -1,0 +1,15 @@
+{% extends  'main/base.html'  %}
+{% block title  %}
+{{title}}
+{% endblock  %}
+
+{% block content  %}
+<div class="container d-flex flex-wrap">
+    {% for menu in menus %}
+    <div>
+        <a class="btn btn-dark button-favorite m-1" href="/menus/{{menu.id}}">{{menu.title}}</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock  %}
+

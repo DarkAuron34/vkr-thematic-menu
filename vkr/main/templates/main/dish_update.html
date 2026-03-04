@@ -1,0 +1,153 @@
+{% extends 'main/base.html' %} {% block title %} {{ title }} {% endblock %}
+{% block content %}
+<h1>{{title}}</h1>
+  <style>
+    .col .row {
+      height: 80px;
+      width: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .search-form {
+      text-align: center;
+      width: 90%;
+    }
+  </style>
+{% if error %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{error}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+  <form
+    class="p-2 pb-4 container border rounded shadow search-form justify-content-center"
+    method="POST"
+  >
+    {%csrf_token%}
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <label for="id_title">Название:</label>
+          <input
+            type="text"
+            name="title"
+            maxlength="255"
+            id="id_title"
+            class="d-block"
+          />
+        </div>
+        <div class="row">
+          <label for="id_image">Изображение:</label>
+          <br>
+          <input type="file" name="image" accept="image/*" id="id_image" />
+
+        </div>
+        <div class="row"
+        style="height: 160px;">
+          <label for="id_description">Описание:</label>
+          <input
+            type="text"
+            name="description"
+            maxlength="1000"
+            id="id_description"
+            class="d-block"
+            style="height: 120px;"
+          />
+        </div>
+        <div class="row">
+          <label for="id_cooking_time" class="mb-2">Время приготовления:</label>
+          <input
+            type="number"
+            name="cooking_time"
+            min="0"
+            id="id_cooking_time"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <label for="id_themes">Тематика:</label>
+
+          <select name="themes" id="id_themes" multiple="">
+            {% for theme in data.themes %}
+            <option value="{{theme.id}}">{{theme.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_national_cuisine">Кухня:</label>
+
+          <select name="national_cuisine" id="id_national_cuisine">
+            {% for national_cuisine in data.national_cuisine %}
+            <option value="{{national_cuisine.id}}">
+              {{national_cuisine.title}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_dish_category">Категория блюд:</label>
+
+          <select name="dish_category" id="id_dish_category">
+            {% for category in data.dish_category %}
+            <option value="{{category.id}}">
+              {{category.title}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_ingredients">Ингридиенты:</label>
+
+          <select name="ingredients" id="id_ingredients" multiple="">
+            {% for ingredient in data.ingredients %}
+            <option value="{{ingredient.id}}">{{ingredient.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+            <label for="id_price">Цена:</label>
+          <div>
+            <input
+              type="number"
+              name="price"
+              min="0"
+              id="id_price"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <label for="id_difficulty">Сложность:</label>
+
+          <select name="difficulty" id="id_difficulty">
+            {% for difficulty in data.difficulties %}
+            <option value="{{difficulty.id}}">{{difficulty.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button
+        type="submit"
+        class="mt-4 btn btn-outline-dark btn-lg mx-auto"
+        style="width: 200px"
+      >
+      Создать блюдо
+      </button>
+
+    </div>
+  </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#id_national_cuisine").select2();
+        $("#id_ingredients").select2();
+        $("#id_themes").select2();
+        $("#id_difficulty").select2();
+        $("#id_dish_category").select2();
+    });
+  </script>
+{% endblock %}

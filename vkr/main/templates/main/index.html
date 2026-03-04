@@ -1,0 +1,78 @@
+{% extends  'main/base.html' %}
+
+{% block title  %}
+    {{ title }}
+{% endblock %}
+
+{% block content  %}
+    <h3>Главная страница</h3>
+    <p> Здесь вы можете начать поиск рецептов, меню или ресторанов по заданным вами критериям</p>
+          <div class="row">
+            <div class="col">
+                <label><h6>Поиск по блюдам:</h6></label>
+                <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none"></a>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0">
+                    <input type="search" class="form-control" placeholder="Введите название блюда..." aria-label="Search">
+                </form>
+                <div class="form-group">
+                        <label><h6>Выбор тематики:</h6></label>
+                        <select name="themeMenu" class="form-select" aria-label="Default select example">
+                            <option selected>Выберите тематику блюда</option>
+                            <option>Новый год/рождество</option>
+                            <option>14 февраля</option>
+                            <option>23 февраля</option>
+                            <option>Масленица</option>
+                            <option>8 марта</option>
+                            <option>Пасха</option>
+                            <option>День рождения</option>
+                            <option>Свадьба</option>
+                            <option>Хэллоуин</option>
+                        </select>
+                </div>
+                    <div class="form-group">
+                        <label><h6>Направление кухни:</h6></label>
+                        <select name="nationalСuisine" class="form-select" aria-label="Default select example">
+                            <option selected>Выберите направление кухни</option>
+                            <option>Варенье и джем</option>
+                            <option>Выпечка</option>
+                            <option>Гарнир</option>
+                        </select>
+                    </div>
+                    <h6>Время приготовления:</h6>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <div id="slider-range"></div>
+            </div>
+            <div class="col">
+                <label><h6>Желаемые ингредиенты</h6></label>
+                <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none"></a>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search"><br>
+                </form>
+                <label><h6>Исключающие ингредиенты</h6></label>
+                <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none"></a>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                </form>
+            </div>
+        </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+      <script>
+      $( function() {
+        $( "#slider-range" ).slider({
+          range: true,
+          min: 0,
+          max: 60,
+          values: [ 20, 40 ],
+          slide: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+          }
+        });
+        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+          " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+      } );
+      </script>
+
+{% endblock %}

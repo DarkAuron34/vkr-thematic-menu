@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block title %}
+{{title}}
+{% endblock %}
+{% block content %}
+<style>
+  form {
+    margin: 0 auto;
+    text-align: center;
+  }
+  form .row .col * {
+    display: block;
+    margin: 0 auto 0 auto;
+  }
+</style>
+<div class="p-4 mx-auto card mt-4">
+  <form method="post">
+    <div class="row">
+      <div class="col">
+        <label for="id_username">Имя пользователя:</label>
+        <input type="text" name="username" maxlength="150" autofocus="" required="" id="id_username">
+      
+          <span class="helptext">Обязательное поле. Не более 150 символов.</span>
+          <span class="helptext">Только буквы, цифры и символы @/./+/-/_.</span>
+          <br>
+        <label for="id_email">Адрес электронной почты:</label>
+        <input type="email" name="email" maxlength="254" id="id_email">
+        <br>
+        <button class="btn btn-dark m-2 mx-auto d-block" style="width: 300px;" type="submit">Зарегистрироваться</button>
+        <a class="btn btn-outline-dark m-2 mx-auto d-block" style="width: 300px;" href="/accounts/login">Войти</a>
+      </div>
+      <div class="col">
+        <label for="id_password1">Пароль:</label>
+        <input type="password" name="password1" autocomplete="new-password" required="" id="id_password1">
+        <label for="id_password2">Подтверждение пароля:</label>
+        <input type="password" name="password2" autocomplete="new-password" required="" id="id_password2">
+        <br>
+        <span class="helptext">Для подтверждения введите, пожалуйста, пароль ещё раз.</span>
+        <span class="helptext"></span></p><ul><li>Пароль не должен быть слишком похож на другую вашу личную информацию.</li><li>Ваш пароль должен содержать как минимум 8 символов.</li><li>Пароль не должен быть слишком простым и распространенным.</li><li>Пароль не может состоять только из цифр.</li></ul>
+      </div>
+    </div>
+    <div class="row">
+    </div>
+    {% csrf_token %}
+  </form>
+</div>
+{% endblock %}

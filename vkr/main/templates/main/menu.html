@@ -1,0 +1,282 @@
+{% extends 'main/base.html' %} {% block title %} {{ title }} {% endblock %}
+{% block content %}
+<div>
+  <style>
+    .col .row {
+      height: 80px;
+      width: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .search-form {
+      text-align: center;
+      width: 90%;
+    }
+  </style>
+  <form
+    class="mt-4 mb-4 p-2 pb-4 container border rounded shadow search-form justify-content-center"
+    method="get"
+  >
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <label for="id_text">Название:</label>
+          <input
+            type="text"
+            name="text"
+            maxlength="255"
+            id="id_text"
+            class="d-block"
+          />
+        </div>
+        <div class="row">
+          <label for="id_themes">Тематика:</label>
+
+          <select name="themes" id="id_themes" multiple="">
+            {% for theme in data.themes %}
+            <option value="{{theme.id}}">{{theme.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_national_cuisine">Кухня:</label>
+
+          <select name="national_cuisine" id="id_national_cuisine" multiple="">
+            {% for national_cuisine in data.national_cuisine %}
+            <option value="{{national_cuisine.id}}">
+              {{national_cuisine.title}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_dish_category">Категория блюд:</label>
+
+          <select name="dish_category" id="id_dish_category" multiple="">
+            {% for category in data.dish_category %}
+            <option value="{{category.id}}">
+              {{category.title}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_min_cooking_time" class="mb-2">Время приготовления:</label>
+          <br />
+          <div>
+            <select
+              class="d-inline"
+              style="width: 49%"
+              name="min_cooking_time"
+              id="id_min_cooking_time"
+              multiple=""
+            >
+              {% for cooking_time in data.min_cooking_time_choices %}
+              <option value="{{cooking_time.id}}">
+                {{cooking_time.title}}
+              </option>
+              {% endfor %}
+            </select>
+
+            <select
+              class="d-inline"
+              style="width: 49%"
+              name="max_cooking_time"
+              id="id_max_cooking_time"
+              multiple=""
+            >
+              {% for cooking_time in data.max_cooking_time_choices %}
+              <option value="{{cooking_time.id}}">
+                {{cooking_time.title}}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <label for="id_ingredients">Ингридиенты:</label>
+
+          <select name="ingredients" id="id_ingredients" multiple="">
+            {% for ingredient in data.ingredients %}
+            <option value="{{ingredient.id}}">{{ingredient.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_ignore_ingredients">Игнорировать ингридиенты:</label>
+
+          <select
+            name="ignore_ingredients"
+            id="id_ignore_ingredients"
+            multiple=""
+          >
+            {% for ingredient in data.ingredients %}
+            <option value="{{ingredient.id}}">{{ingredient.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <label for="id_min_price">Диапазон цены:</label>
+          <div>
+            <input
+              type="number"
+              name="min_price"
+              min="0"
+              placeholder="От"
+              id="id_min_price"
+              style="width: 49%;"
+            />
+
+            <input
+              type="number"
+              name="max_price"
+              min="0"
+              placeholder="До"
+              id="id_max_price"
+              style="width: 49%;"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <label for="id_max_dishes_in_category">Кол-во блюд в категории блюд:</label>
+          <input
+            type="number"
+            name="max_dishes_in_category"
+            min="0"
+            id="id_max_dishes_in_category"
+          />
+        </div>
+        <div class="row">
+          <label for="id_difficulty">Сложность:</label>
+
+          <select name="difficulty" id="id_difficulty" multiple="">
+            {% for difficulty in data.difficulties %}
+            <option value="{{difficulty.id}}">{{difficulty.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row pt-4 pb-4">
+      <button
+        type="submit"
+        name="action"
+        value="Create"
+        class="btn btn-outline-dark btn-lg mx-auto"
+        style="width: 200px"
+      >
+        Создать меню
+      </button>
+    </div>
+  </form>
+  <script>
+    $(document).ready(function () {
+      $("#id_national_cuisine").select2();
+      $("#id_ingredients").select2();
+      $("#id_ignore_ingredients").select2();
+      $("#id_dish_category").select2();
+      $("#id_min_cooking_time").select2({
+        placeholder: 'От',
+      });
+      $("#id_max_cooking_time").select2({
+        placeholder: 'До',
+      });
+      $("#id_themes").select2();
+      $("#id_difficulty").select2();
+    });
+  </script>
+</div>
+{% if menu %}
+<div class="mt-4 mb-4 card">
+  {% if menu in user.profile.favorite_menus.all %}
+  <a
+    class="btn btn-outline-dark m-2"
+    href="/favorites?type=menu&id={{menu.id}}&action=remove"
+    ><i class="bi bi-check-circle-fill"></i>  Удалить меню</a
+  >
+  {% else %}
+  <div class="d-flex">
+    <a
+      class="btn btn-outline-dark m-2 mx-auto"
+      style="width: 45%;"
+      href="/favorites?type=menu&id={{menu.id}}&action=add"
+      ><i class="bi bi-check-circle"></i>  Сохранить меню</a
+    >
+    <a
+      class="btn btn-outline-dark m-2 mx-auto"
+      style="width: 45%;"
+      href="/active_menu/remove/"
+      ><i class="bi bi-check-circle-fill"></i>  Удалить меню</a
+    >
+
+  </div>
+  {% endif %}
+  <hr> 
+  <div id="active-menu"></div>
+  <div class="container">
+    <div class="row">
+      {% for category in categories %}
+        <div class="col mb-4">
+          <div class="card" style="width:270px;">
+            <div class="row">
+              <h3>{{category.title}}</h3>
+            </div>
+            {% if category.dishes %}
+              {% for dish in category.dishes %}
+                <div class="mx-auto">
+                  <!-- dish_element -->
+                    <div class="card dish-element shadow m-4">
+                      {%if dish.image%}
+                      <a href="/dish/{{dish.id}}">
+                        <div style="height: 100px; overflow: hidden">
+                          <img src="{{dish.image.url}}" class="rounded card-img-top mb-2" />
+                        </div>
+                      </a>
+                      {%endif%}
+                      <a class="card-title btn btn-outline-dark btn-lg" href="/dish/{{dish.id}}"
+                        >{{dish.title}}</a
+                      >
+                      <div class="card-body">
+                        {% if dish in user.profile.favorite_dishes.all %}
+                        <a
+                          class="btn btn-dark button-favorite my-2"
+                          href="/favorites?type=dish&id={{dish.id}}&action=remove"
+                          ><i class="bi bi-check-circle-fill"></i>Удалить из избранного</a
+                        >
+                        {% else %}
+                        <a
+                          class="btn btn-dark button-favorite my-2"
+                          href="/favorites?type=dish&id={{dish.id}}&action=add"
+                          ><i class="bi bi-check-circle"></i>Добавить в избранное</a
+                        >
+                        {% endif %}
+                        <a
+                          class="btn btn-dark button-favorite my-2"
+                          href="/active_menu/edit?dish={{dish.id}}&action=remove"
+                          ><i class="bi bi-check-circle-fill"></i>Удалить из меню</a
+                        >
+                        <a
+                          class="btn btn-dark button-favorite my-2"
+                          href="/active_menu/edit?dish={{dish.id}}&action=replace"
+                          >Поменять на другое похожее блюдо</a
+                        >
+                      </div>
+                    </div>
+                  <!-- dish_element -->
+                </div>
+              {% endfor %}
+            {% else %}
+              <h3>No dishes in category</h3>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

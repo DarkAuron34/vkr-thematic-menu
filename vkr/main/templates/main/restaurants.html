@@ -1,0 +1,110 @@
+{% extends  'main/base.html'  %}
+{% block title  %}
+    {{ title }}
+{% endblock  %}
+{% block content  %}
+<div>
+    <style>
+      .col .row {
+        height: 80px;
+        width: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+      }
+      .search-form {
+        padding-top: 20px;
+        text-align: center;
+        width: 60%;
+        margin-bottom: 20px;
+      }
+      label {
+        margin: 4px;
+        margin-bottom: 12px;
+      }
+    </style>
+    <form
+      class="p-2 pb-4 w-75 container border rounded shadow search-form justify-content-center"
+      method="get"
+    >
+      <div class="row">
+        <div class="col">
+          <label for="id_city">Город:</label>
+          <br>
+          <select name="city" id="id_city" multiple="">
+            {% for city in data.cities %}
+            <option value="{{city.id}}">{{city.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <label for="id_themes">Темы:</label>
+          <br>
+          <select name="themes" id="id_themes" multiple="">
+            {% for theme in data.themes %}
+            <option value="{{theme.id}}">{{theme.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <label for="id_national_cuisine">Кухня:</label>
+          <br>
+          <select name="national_cuisine" id="id_national_cuisine" multiple="">
+            {% for national_cuisine in data.national_cuisine %}
+            <option value="{{national_cuisine.id}}">
+              {{national_cuisine.title}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="row">
+          <button type="submit" name="action" value="Search" class="btn btn-outline-dark btn-lg mx-auto mt-4" style="width: 100px;">Поиск</button>
+      </div>
+    </form>
+    <script>
+      $(document).ready(function () {
+        $("#id_themes").select2();
+        $("#id_national_cuisine").select2();
+        $("#id_city").select2();
+      });
+    </script>
+    <div class="container d-flex flex-wrap">
+        {% for restaurant in restaurants %}
+            <!-- restaurant element -->
+                <div class="restaurant card p-2 m-2">
+                    {%if restaurant.image%}
+                    <a href="/restaurants/{{restaurant.id}}">
+                      <div style="height: 100px; overflow: hidden">
+                        <img src="{{restaurant.image.url}}" class="rounded card-img-top mb-2" />
+                      </div>
+                    </a>
+                    {%endif%}
+                    <a class="btn btn-outline-dark btn-lg" href="/restaurants/{{restaurant.id}}"><h3>{{restaurant.title}}</h3></a>
+                    {% if restaurant in user.profile.favorite_restaurants.all %}
+                    <a
+                      class="btn btn-dark button-favorite m-2"
+                      href="/favorites?type=restaurant&id={{restaurant.id}}&action=remove"
+                      ><i class="bi bi-check-circle-fill"></i>Удалить из избранного</a
+                    >
+                    {% else %}
+                    <a
+                      class="btn btn-dark button-favorite m-2"
+                      href="/favorites?type=restaurant&id={{restaurant.id}}&action=add"
+                      ><i class="bi bi-check-circle"></i>Добавить в избранное</a
+                    >
+                    {% endif %}
+                </div>
+            <!-- restaurant element -->
+        {% endfor %}
+        <style>
+            div .restaurant {
+                width: 200px;
+            }
+        </style>
+    </div>
+<!--     <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A6b66280b83cdf1611d547ce5796e33a51a5b5e1228da0a1fe5beb70106635ee7&width=759&height=543&lang=ru_RU&scroll=true%22%3E"></script> -->
+</div>
+{% endblock %}
+

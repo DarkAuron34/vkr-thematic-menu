@@ -1,0 +1,87 @@
+{% extends 'main/base.html' %} {% block title %} {{title}} {% endblock %}
+{% block content %}
+<div class="container">
+  <style>
+    .favorites * .card {
+      height: 300px;
+      overflow: auto;
+    }
+    .card-category {
+      width: 220px;
+    }
+    div .card {
+      margin: 5px;
+      padding: 5px;
+    }
+  </style>
+  <h1 style="text-align: center" ;>Профиль пользователя {{user.username}}</h1>
+  <br />
+  {% if user.email %}
+  <h3>email: {{user.email}}</h3>
+  {%endif%}
+
+  <div class="row">
+    <br />
+    <br />
+    <div class="col">
+      <div class="favorites">
+        <h1>Избранное</h1>
+        <br>
+        <div class="d-flex flex-wrap m-4">
+          <div class="card card-category">
+            <h2>Блюда</h2>
+            <div class="card">
+              {% for dish in user.profile.favorite_dishes.all %}
+              <a
+                class="btn btn-dark button-favorite m-2"
+                href="/dish/{{dish.id}}"
+                >{{dish.title}}</a
+              >
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card card-category">
+            <h2>Рестораны</h2>
+            <div class="card">
+              {% for restaurant in user.profile.favorite_restaurants.all %}
+              <a
+                class="btn btn-dark button-favorite m-2"
+                href="/restaurants/{{restaurant.id}}"
+                >{{restaurant.title}}</a
+              >
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <h1>Создано пользователем</h1>
+      <div class="favorites d-flex flex-wrap">
+        <div class="card card-category">
+          <h2>Блюда</h2>
+          <div class="card">
+            {% for dish in user.dish_set.all %}
+            <a class="btn btn-dark button-favorite m-1" href="/dish/{{dish.id}}"
+              >{{dish.title}}</a
+            >
+            {% endfor %}
+          </div>
+        </div>
+        <div class="card card-category">
+          <h2>Меню</h2>
+          <div class="card">
+            {% for menu in user.profile.favorite_menus.all %}
+            <a
+              class="btn btn-dark button-favorite m-1"
+              href="/active_menu/set/?id={{menu.id}}"
+              >{{menu.title}}</a
+            >
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

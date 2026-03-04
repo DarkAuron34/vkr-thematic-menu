@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %} {% block title %} {{ title }} {% endblock %}
+{% block content %}
+<h1>Информация о ресторане</h1>
+<div class="container">
+  <div class="restaurant">
+    <div class="row">
+      <div class="col">
+          {% if restaurant.image%}
+            <img src="{{restaurant.image.url}}" style="width: 100%;" class="rounded mb-2">
+          {% endif %}
+      </div>
+      <div class="col">
+        <h3>{{restaurant.title}}</h3>
+        <p>{{restaurant.address}}</p>
+        <p>{{restaurant.city}}</p>
+        <p>{{restaurant.district}}</p>
+        <p>{{restaurant.description}}</p>
+        <h4>Кухни</h4>
+        <div class="card">
+          {% for national_cuisine in restaurant.national_cuisine.all %}
+            <p>{{national_cuisine.title}}</p>
+          {% endfor %}
+        </div>
+        <h4>Тематики</h4>
+        <div class="card">
+          {% for theme in restaurant.themes.all %}
+            <p>{{theme.title}}</p>
+          {% endfor %}
+        </div>
+        {% if restaurant in user.profile.favorite_restaurants.all %}
+        <a
+          class="btn btn-dark button-favorite m-2"
+          href="/favorites?type=restaurant&id={{restaurant.id}}&action=remove"
+          ><i class="bi bi-check-circle-fill"></i>Удалить из избранного</a
+        >
+        {% else %}
+        <a
+          class="btn btn-dark button-favorite m-2"
+          href="/favorites?type=restaurant&id={{restaurant.id}}&action=add"
+          ><i class="bi bi-check-circle"></i>Добавить в избранное</a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!--     <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A6b66280b83cdf1611d547ce5796e33a51a5b5e1228da0a1fe5beb70106635ee7&width=759&height=543&lang=ru_RU&scroll=true%22%3E"></script> -->
+
+{% endblock %}

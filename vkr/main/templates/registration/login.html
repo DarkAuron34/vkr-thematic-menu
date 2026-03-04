@@ -1,0 +1,43 @@
+{% extends  'main/base.html' %}
+
+{% block title  %}
+{{title}}
+{% endblock  %}
+
+{% block content %}
+<style>
+  form {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  form * {
+    margin: 10px auto 10px auto;
+  }
+</style>
+{% if error %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{error}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<form method="post" class="p-4 p-md-5 border rounded-3 bg-light">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col">
+    <label for="id_username">Имя пользователя:</label>
+    <br>
+    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+    <br>
+    <label id_password">Пароль:</label>
+    <br>
+    <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+    <button class="w-100 btn btn-lg btn-dark" style="width: 100px;" type="submit">Войти</button>
+    <hr class="my-4">
+    <small class="text-muted">Нажимая кнопку "Войти" вы соглашаетесь с правилами использования.</small>
+    <hr class="my-4">
+    <a class="w-100 btn btn-outline-dark m-2 mx-auto" style="width: 300px;" href="/accounts/registration">Зарегистрироваться</a>
+    </div>
+  </div>
+</form>
+{% endblock %}
